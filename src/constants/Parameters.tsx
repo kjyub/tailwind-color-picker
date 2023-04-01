@@ -1,0 +1,3 @@
+export const BLACK_COLOR_BRIGHTNESS = 300
+
+export const COLOR_TABLE_MIN_WIDTH = 1100

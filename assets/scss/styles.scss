@@ -1,0 +1,41 @@
+@tailwind base;
+@tailwind components;
+
+*:focus{
+  outline:0 none i !important;
+}
+textarea:focus {
+  outline: none;
+}
+
+.flex-center{
+  @apply items-center justify-center;
+}
+
+.scroll-transparent {
+    &.scroll-overlay {
+      overflow:overlay;
+    }
+  
+    &::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+      background: transparent;
+    }
+    &.thumb-lg::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+      border-radius: 4px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: rgba(0, 0, 0, 0.3);
+  
+      border-radius: 9999px;
+      transition: all 0.3s;
+      &:hover {
+          background: rgba(0, 0, 0, 0.45);
+      }
+    }
+  }
+
+@tailwind utilities;
