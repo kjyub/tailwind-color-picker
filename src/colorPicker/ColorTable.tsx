@@ -133,7 +133,7 @@ const ColorCell = ({colorName, color, index, brightness="", showColorEditCompone
         //         <ChromePicker color={colorValue} onChange={(_color) => setColorValue(_color.hex)} />
         //     </div>
         // ) : (null))
-
+        
         showColorEditComponent(absoluteLeft, absoluteTop, colorValue, [colorName, brightness])
 
         setShowColorEdit(!showColorEdit)

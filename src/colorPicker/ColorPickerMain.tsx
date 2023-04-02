@@ -39,7 +39,9 @@ const getStorageExtendColor = (): ColorPalette => {
 }
 
 const mergeColor = (baseColor: ColorPalette, extendColor: ColorPalette): ColorPalette => {
+    console.log(baseColor["gray"], extendColor["gray"])
     let merged = _.cloneDeep(baseColor)
+
     Object.keys(baseColor).map(baseColorName => {
         const extendColorValue = extendColor[baseColorName]
 
@@ -56,14 +58,24 @@ const mergeColor = (baseColor: ColorPalette, extendColor: ColorPalette): ColorPa
 
         if (baseColorValue === undefined) {
             merged[extendColorName] = extendColor[extendColorName]
+        } else {
+            _.merge(merged[extendColorName], extendColor[extendColorName])
         }
     })
 
     return merged
 }
 
-const BlankSetColor = (color: string) => {
+const saveLocalStorage = (storageKey: string, colorPalette: ColorPalette): boolean => {
+    let bResult = false
+    try {
+        localStorage.setItem(storageKey, JSON.stringify(colorPalette))
+        bResult = true
+    } catch {
 
+    }
+
+    return bResult
 }
 
 const ColorPickerMain = () => {
@@ -86,13 +98,7 @@ const ColorPickerMain = () => {
     const [colorEditorColorCode, setColorEditorColorCode] = useState<Array<string>>([])
 
     useEffect(()=>{
-        const base = getStorageBaseColor()
-        const extend = getStorageExtendColor()
-
-        setBaseColorData(base)
-        setExtendColorData(extend)
-        
-        // setColorData(mergeColor(base, extend))
+        loadColorStorage()
     }, [])
 
     useEffect(()=>{
@@ -110,6 +116,14 @@ const ColorPickerMain = () => {
 
         setFilteredColorData(newColorData)
     }, [filterColor])
+
+    const loadColorStorage = () => {
+        const base = getStorageBaseColor()
+        const extend = getStorageExtendColor()
+
+        setBaseColorData(base)
+        setExtendColorData(extend)
+    }
 
     const handleFilter = (colorName: string) => {
         const newFilter = filterColor.copy()
@@ -147,14 +161,32 @@ const ColorPickerMain = () => {
         setShowEditorComponent(true)
     }
 
+    const handleSaveStorage = () => {
+        if (!saveLocalStorage(STORAGE_BASE_COLORS, baseColorData)) {
+            alert("기본 색상 저장에 실패했습니다.")
+            return
+        }
+        if (!saveLocalStorage(STORAGE_EXTEND_COLORS, extendColorData)) {
+            alert("확장 색상 저장에 실패했습니다.")
+            return
+        }
+        
+        alert("저장되었습니다.")
+    }
+
+    const handleRestore = () => {
+        loadColorStorage()
+        alert("저장된 값을 불러왔습니다.")
+    }
+
     return (
         <ColorPickerMainLayout>
             <ColorPickerControlBox>
                 <div className='flex'>
                     <ColorFilterEditorButton onClick={()=>{setShowBaseColorEditor(true)}}>기본 색상 설정</ColorFilterEditorButton>
-                    <ColorFilterEditorButton onClick={()=>{setShowExtendColorEditor(true)}}>확장 색상 설정</ColorFilterEditorButton>
-                    <ColorSaveButton onClick={()=>{setShowExtendColorEditor(true)}}>저장</ColorSaveButton>
-                    <ColorSaveButton onClick={()=>{setShowExtendColorEditor(true)}}>되돌리기</ColorSaveButton>
+                    <ColorFilterEditorButton onClick={()=>{setShowExtendColorEditor(true)}}>확장(커스텀) 색상 설정</ColorFilterEditorButton>
+                    <ColorSaveButton onClick={()=>{handleSaveStorage()}}>저장</ColorSaveButton>
+                    <ColorSaveButton onClick={()=>{handleRestore()}}>되돌리기</ColorSaveButton>
                 </div>
                 <div className='flex'>
                     <ColorFilterModeButton is_filter={!isFilterMode} onClick={()=>{setFilterMode(false)}}>

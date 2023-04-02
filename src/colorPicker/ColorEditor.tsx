@@ -25,28 +25,15 @@ const ColorEditor = ({left, top, color, colorCode, baseColorPalette, setBaseColo
     const handleColorChange = (newColor: string) => {
         setEditorColor(newColor)
 
-        if (baseColorPalette[colorCode[0]] !== undefined) {
-            const newBaseColorPalette = _.cloneDeep(baseColorPalette)
-            let newBaseColor = newBaseColorPalette[colorCode[0]]
-            if (colorCode[1] === "0") {
-                newBaseColor = newColor
-            } else if (typeof newBaseColor === "object") {
-                newBaseColor[colorCode[1]] = newColor
-            }
-
-            setBaseColorPalette(newBaseColorPalette)
+        const newExtendColorPalette = _.cloneDeep(extendColorPalette)
+        let newExtendColor = newExtendColorPalette[colorCode[0]]
+        if (colorCode[1] === "0") {
+            newExtendColor = newColor
+        } else if (typeof newExtendColor === "object") {
+            newExtendColor[colorCode[1]] = newColor
         }
-        else if (extendColorPalette[colorCode[0]] !== undefined) {
-            const newExtendColorPalette = _.cloneDeep(extendColorPalette)
-            let newExtendColor = newExtendColorPalette[colorCode[0]]
-            if (colorCode[1] === "0") {
-                newExtendColor = newColor
-            } else if (typeof newExtendColor === "object") {
-                newExtendColor[colorCode[1]] = newColor
-            }
 
-            setExtendColorPalette(newExtendColorPalette)
-        }
+        setExtendColorPalette(newExtendColorPalette)
     }
 
     return (
