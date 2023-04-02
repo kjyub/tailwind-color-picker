@@ -1,7 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ['./public/index.html', "./static/**/*.{html,js,ts,tsx}"],
-  safelist: [{ pattern: /./ , variants:["hover"] }], //모든 속성을 빌드한다. (개발시에만)
+  // safelist: [{ pattern: /./ , variants:["hover"] }], //모든 속성을 빌드한다. (개발시에만)
   
   theme: {
     extend: {
