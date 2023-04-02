@@ -57,5 +57,6 @@
     "node-sass": "7.0.3",
     "react-color": "2.19.3",
     "sass": "1.60.0"
-  }
+  },
+  "homepage": "https://kjyub.github.io/tailwind-color-picker/"
 }
