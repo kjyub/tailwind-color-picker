@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/tailwind-color-picker/static/css/main.97de2971.css",
-    "main.js": "/tailwind-color-picker/static/js/main.aac9d70a.js",
+    "main.js": "/tailwind-color-picker/static/js/main.9f953162.js",
     "index.html": "/tailwind-color-picker/index.html",
     "main.97de2971.css.map": "/tailwind-color-picker/static/css/main.97de2971.css.map",
-    "main.aac9d70a.js.map": "/tailwind-color-picker/static/js/main.aac9d70a.js.map"
+    "main.9f953162.js.map": "/tailwind-color-picker/static/js/main.9f953162.js.map"
   },
   "entrypoints": [
     "static/css/main.97de2971.css",
-    "static/js/main.aac9d70a.js"
+    "static/js/main.9f953162.js"
   ]
 }
