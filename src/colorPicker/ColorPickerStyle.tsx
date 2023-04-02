@@ -23,6 +23,12 @@ ${(props: IColorFilterModeButton) => props.is_filter ? "bg-white text-black":"bg
 export const ColorFilterEditorButton = tw.button`
 flex flex-center mr-2
 px-2 py-0.5 rounded-lg border border-white
+hover:bg-gray-600
+`
+export const ColorSaveButton = tw.button`
+flex flex-center mr-2
+px-2 py-0.5 border border-white
+hover:bg-gray-600
 `
 
 export const ColorTableLayout = tw.div`

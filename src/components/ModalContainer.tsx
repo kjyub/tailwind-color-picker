@@ -4,7 +4,7 @@ import tw from "tailwind-styled-components"
 import { Dispatcher } from '../types/Dispatcher';
 
 const ShowBackGroundAnimationDuration = 100
-const ShowChildAnimationDuration = 300
+const ShowChildAnimationDuration = 200
 
 interface IModalDiv {
     scrollY: number
@@ -15,6 +15,7 @@ export interface IModalContainer {
     children: any,
     visibility?: boolean,
     setVisibility: Dispatcher<boolean> | null
+    isBackground?: boolean
 }
 export interface IModalComponent {
     visibility?: boolean,
@@ -49,10 +50,14 @@ const ModalDivBackground = styled.div`
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0,0,0,0.25);
     z-index: 10;
-    backdrop-filter: blur(3px);
     overflow: hidden;
+`
+const ModalDivBackgroundBlur = styled(ModalDivBackground)`
+    background-color: rgba(0,0,0,0.25);
+    backdrop-filter: blur(3px);
+`
+const ModalDivBackgroundTransparent = styled(ModalDivBackground)`
 `
 const ModalDivComponent = styled.div<IModalDiv>`
     z-index: 12;
@@ -70,7 +75,7 @@ export const ModalDivContainer = styled.div`
     overflow-y: auto;
 `
 
-export const ModalContainer: React.FC<IModalContainer> = ({children, visibility, setVisibility}) => {
+export const ModalContainer: React.FC<IModalContainer> = ({children, visibility, setVisibility, isBackground=true}) => {
     const [bodyScrollY, setBodyScrollY] = useState(0)
     const [isMounted, setIsMounted] = useState(false)
     const setCloseModal = () => {
@@ -116,7 +121,11 @@ export const ModalContainer: React.FC<IModalContainer> = ({children, visibility,
             <ModalDivComponent scrollY={bodyScrollY} visibility={visibility}>
                 {isMounted && children}
             </ModalDivComponent>
-            <ModalDivBackground onClick={()=>{setCloseModal()}} />
+            {isBackground ? (
+                <ModalDivBackgroundBlur onClick={()=>{setCloseModal()}} />
+            ) : (
+                <ModalDivBackgroundTransparent onClick={()=>{setCloseModal()}} />
+            )}
         </ModalDiv>
     )
 }

@@ -5,10 +5,12 @@ import DEFAULT_COLOR from '../constants/DefaultColor';
 import { ColorPalette } from '../types/ColorPalette';
 import { Dictionary } from '../types/Dictionary';
 import ColorDataEditor from './ColorDataEditor';
-import { ColorFilterEditorButton, ColorFilterModeButton, ColorPickerControlBox, ColorPickerMainLayout, ColorRowControlButton } from './ColorPickerStyle';
+import { ColorFilterEditorButton, ColorFilterModeButton, ColorPickerControlBox, ColorPickerMainLayout, ColorRowControlButton, ColorSaveButton } from './ColorPickerStyle';
 import ColorTable from './ColorTable';
-import _, { update } from "lodash"
+import _ from "lodash"
 import { BLACK_COLOR_BRIGHTNESS } from '../constants/Parameters';
+import ColorEditor from './ColorEditor';
+import { Dispatcher } from '../types/Dispatcher';
 
 const getStorageBaseColor = (): ColorPalette => {
     let color: ColorPalette = {}
@@ -59,7 +61,11 @@ const mergeColor = (baseColor: ColorPalette, extendColor: ColorPalette): ColorPa
 
     return merged
 }
- 
+
+const BlankSetColor = (color: string) => {
+
+}
+
 const ColorPickerMain = () => {
     const [baseColorData, setBaseColorData] = useState<ColorPalette>({})
     const [extendColorData, setExtendColorData] = useState<ColorPalette>({})
@@ -72,6 +78,12 @@ const ColorPickerMain = () => {
 
     const [showBaseColorEditor, setShowBaseColorEditor] = useState(false)
     const [showExtendColorEditor, setShowExtendColorEditor] = useState(false)
+
+    const [showEditorComponent, setShowEditorComponent] = useState(false)
+    const [colorEditorLeft, setColorEditorLeft] = useState(0)
+    const [colorEditorTop, setColorEditorTop] = useState(0)
+    const [colorEditorColor, setColorEditorColor] = useState("")
+    const [colorEditorColorCode, setColorEditorColorCode] = useState<Array<string>>([])
 
     useEffect(()=>{
         const base = getStorageBaseColor()
@@ -127,6 +139,13 @@ const ColorPickerMain = () => {
         localStorage.setItem(STORAGE_EXTEND_COLORS, json)
     }
 
+    const handleColorEditComponent = (left: number, top: number, color: string, colorCode: Array<string>) => {
+        setColorEditorLeft(left)
+        setColorEditorTop(top)
+        setColorEditorColor(color)
+        setColorEditorColorCode(colorCode)
+        setShowEditorComponent(true)
+    }
 
     return (
         <ColorPickerMainLayout>
@@ -134,6 +153,8 @@ const ColorPickerMain = () => {
                 <div className='flex'>
                     <ColorFilterEditorButton onClick={()=>{setShowBaseColorEditor(true)}}>기본 색상 설정</ColorFilterEditorButton>
                     <ColorFilterEditorButton onClick={()=>{setShowExtendColorEditor(true)}}>확장 색상 설정</ColorFilterEditorButton>
+                    <ColorSaveButton onClick={()=>{setShowExtendColorEditor(true)}}>저장</ColorSaveButton>
+                    <ColorSaveButton onClick={()=>{setShowExtendColorEditor(true)}}>되돌리기</ColorSaveButton>
                 </div>
                 <div className='flex'>
                     <ColorFilterModeButton is_filter={!isFilterMode} onClick={()=>{setFilterMode(false)}}>
@@ -149,6 +170,7 @@ const ColorPickerMain = () => {
                 filterColor={filterColor}
                 handleFilter={handleFilter} 
                 addColorBrightness={handleAddColorBrigtness}
+                showColorEditComponent={handleColorEditComponent}
             />
 
             <ModalContainer visibility={showBaseColorEditor} setVisibility={setShowBaseColorEditor}>
@@ -160,6 +182,7 @@ const ColorPickerMain = () => {
                     initColor={DEFAULT_COLOR}
                 />
             </ModalContainer>
+
             <ModalContainer visibility={showExtendColorEditor} setVisibility={setShowExtendColorEditor}>
                 <ColorDataEditor 
                     colorPalette={extendColorData} 
@@ -167,6 +190,22 @@ const ColorPickerMain = () => {
                     storageKey={STORAGE_EXTEND_COLORS} 
                     setVisibility={setShowExtendColorEditor} 
                     initColor={{}}
+                />
+            </ModalContainer>
+
+            <ModalContainer visibility={showEditorComponent} setVisibility={setShowEditorComponent} isBackground={false}>
+                <ColorEditor
+                    left={colorEditorLeft}
+                    top={colorEditorTop}
+                    color={colorEditorColor}
+                    colorCode={colorEditorColorCode}
+
+                    baseColorPalette={baseColorData} 
+                    setBaseColorPalette={setBaseColorData} 
+                    extendColorPalette={extendColorData} 
+                    setExtendColorPalette={setExtendColorData} 
+
+                    setVisibility={setShowEditorComponent}
                 />
             </ModalContainer>
         </ColorPickerMainLayout>
