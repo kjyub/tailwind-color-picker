@@ -28,6 +28,8 @@ const ColorTable = ({colorData, addColorBrightness, filterColor, handleFilter, s
     return (
         <ColorTableLayout>
             {colorNames.map(colorName => (
+                // 필터 조건
+                (filterColor.count() === 0 || filterColor.contains(colorName)) && 
                 colorData[colorName] !== undefined && (
                     <ColorRow 
                         colorName={colorName} 
@@ -133,7 +135,7 @@ const ColorCell = ({colorName, color, index, brightness="", showColorEditCompone
         //         <ChromePicker color={colorValue} onChange={(_color) => setColorValue(_color.hex)} />
         //     </div>
         // ) : (null))
-        
+
         showColorEditComponent(absoluteLeft, absoluteTop, colorValue, [colorName, brightness])
 
         setShowColorEdit(!showColorEdit)

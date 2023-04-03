@@ -82,7 +82,6 @@ const ColorPickerMain = () => {
     const [baseColorData, setBaseColorData] = useState<ColorPalette>({})
     const [extendColorData, setExtendColorData] = useState<ColorPalette>({})
     const [colorData, setColorData] = useState<ColorPalette>({})
-    const [filteredColorData, setFilteredColorData] = useState<ColorPalette>({})
 
     const [filterColor, setFilterColor] = useState(new Dictionary<string, number>())
 
@@ -104,18 +103,6 @@ const ColorPickerMain = () => {
     useEffect(()=>{
         setColorData(mergeColor(baseColorData, extendColorData))
     }, [baseColorData, extendColorData])
-
-    useEffect(()=>{
-        let newColorData:ColorPalette = {}
-
-        Object.keys(colorData).map(colorName => {
-            if (filterColor.contains(colorName)) {
-                newColorData[colorName] = colorData[colorName]
-            }
-        })
-
-        setFilteredColorData(newColorData)
-    }, [filterColor])
 
     const loadColorStorage = () => {
         const base = getStorageBaseColor()
@@ -198,7 +185,7 @@ const ColorPickerMain = () => {
                 </div>
             </ColorPickerControlBox>
             <ColorTable 
-                colorData={isFilterMode ? filteredColorData : colorData} 
+                colorData={colorData}
                 filterColor={filterColor}
                 handleFilter={handleFilter} 
                 addColorBrightness={handleAddColorBrigtness}
